@@ -1,0 +1,7 @@
+{
+  "name": "SIMPATUH KOPERASI KONAWE",
+  "description": "Instrumen Digital Pemeriksaan Kepatuhan Koperasi Eksisting Dinas Koperasi & UKM Kabupaten Konawe terintegrasi Google Sheets",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

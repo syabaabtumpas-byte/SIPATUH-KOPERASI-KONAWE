@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instrumen Kepatuhan Koperasi Konawe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 p-2 sm:p-4">
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    
+    <!-- Kop Surat Resmi -->
+    <div className="bg-emerald-900 text-white p-4">
+      <div class="flex items-center gap-3">
+        <img src="https://ais-dev-ucgxol7ukpybx3u7dqpxjz-468464830617.asia-northeast1.run.app/assets/aistudio/logo_konawe_kecil_a819e4b8.png" alt="Logo Konawe" class="w-12 h-14 object-contain bg-white/10 p-1 rounded">
+        <div>
+          <div class="text-[11px] font-bold tracking-wider text-emerald-200 uppercase">Pemerintah Kabupaten Konawe</div>
+          <h1 class="text-base sm:text-xl font-extrabold uppercase">Dinas Koperasi dan UKM</h1>
+          <p class="text-xs text-emerald-100">Instrumen Digital Pemeriksaan Kepatuhan Koperasi Eksisting</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Konten Formulir -->
+    <div class="p-4 sm:p-6 space-y-6">
+      
+      <!-- Skor Kepatuhan & Status -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div>
+          <span class="text-xs text-slate-500 font-semibold uppercase">Hasil Skor Pemeriksaan:</span>
+          <div class="flex items-baseline gap-2 mt-0.5">
+            <span id="scoreText" class="text-2xl font-bold font-mono text-slate-900">0%</span>
+            <span id="scoreDetail" class="text-xs text-slate-500">(0 dari 18 Patuh)</span>
+          </div>
+        </div>
+        <div id="statusBadge" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">
+          Belum Diperiksa
+        </div>
+      </div>
+
+      <!-- Identitas Koperasi -->
+      <div class="border border-slate-200 rounded-xl p-4 bg-white">
+        <h2 class="text-sm font-bold text-slate-900 mb-3 border-b pb-2">Identitas Koperasi</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Koperasi *</label>
+            <input type="text" id="namaKoperasi" placeholder="Contoh: KSP Harapan Konawe" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nomor Badan Hukum / NIK</label>
+            <input type="text" id="nomorBadanHukum" placeholder="Nomor AHU / Sertifikat NIK" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-600 outline-none">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Jenis Koperasi</label>
+            <select id="jenisKoperasi" class="w-full px-3 py-2 border rounded-lg bg-white">
+              <option>KSP/KSPPS</option>
+              <option>Serba Usaha</option>
+              <option>Produsen</option>
+              <option>Konsumen</option>
+              <option>Jasa</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tanggal Pemeriksaan</label>
+            <input type="date" id="tanggalPemeriksaan" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-700 mb-1">Alamat Koperasi</label>
+            <input type="text" id="alamatKoperasi" placeholder="Desa/Kelurahan, Kecamatan, Kab. Konawe" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tim Pemeriksa Dinas (Nama)</label>
+            <input type="text" id="timPemeriksa" placeholder="Nama Petugas Pemeriksa" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Pengurus / Perwakilan (Nama)</label>
+            <input type="text" id="pengurusKoperasi" placeholder="Nama Pengurus Koperasi" class="w-full px-3 py-2 border rounded-lg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist 4 Aspek -->
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <div class="bg-slate-100 px-4 py-3 border-b flex justify-between items-center">
+          <h2 class="text-sm font-bold text-slate-900">Uji 18 Parameter Kepatuhan</h2>
+          <button onclick="setAllPatuh()" class="text-xs font-bold text-emerald-700 hover:underline">Set Semua Patuh</button>
+        </div>
+        <div id="itemsContainer" class="divide-y divide-slate-100 text-xs">
+          <!-- Diisi otomatis oleh JavaScript -->
+        </div>
+      </div>
+
+      <!-- Lembar Wawancara Singkat -->
+      <div class="border border-slate-200 rounded-xl p-4 bg-white">
+        <h2 class="text-sm font-bold text-slate-900 mb-3 border-b pb-2">Lembar Wawancara Singkat Pengurus</h2>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">1. Pemahaman Regulasi & AD/ART (Prosedur Darurat):</label>
+            <textarea id="w1" rows="2" placeholder="Catatan jawaban..." class="w-full px-3 py-2 border rounded-lg"></textarea>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">2. Manajemen Risiko & NPL Pinjaman Macet:</label>
+            <textarea id="w2" rows="2" placeholder="Catatan jawaban..." class="w-full px-3 py-2 border rounded-lg"></textarea>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">3. Transparansi Informasi Keuangan kepada Anggota:</label>
+            <textarea id="w3" rows="2" placeholder="Catatan jawaban..." class="w-full px-3 py-2 border rounded-lg"></textarea>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">4. Pemisahan Kewenangan Operasional (Manajer) & Kebijakan (Pengurus):</label>
+            <textarea id="w4" rows="2" placeholder="Catatan jawaban..." class="w-full px-3 py-2 border rounded-lg"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rekomendasi Tindak Lanjut -->
+      <div class="border border-slate-200 rounded-xl p-4 bg-white">
+        <h2 class="text-sm font-bold text-slate-900 mb-3 border-b pb-2">Rekomendasi Tindak Lanjut Utama</h2>
+        <div class="space-y-2 text-xs">
+          <input type="text" id="rek1" value="Melengkapi dan memutakhirkan Buku Daftar Anggota (BDA) secara berkala." class="w-full px-3 py-2 border rounded-lg">
+          <input type="text" id="rek2" value="Menyampaikan laporan keuangan periodik melalui sistem ODS Kemenkop UKM." class="w-full px-3 py-2 border rounded-lg">
+          <input type="text" id="rek3" value="Memastikan pelaksanaan RAT diselenggarakan tepat waktu maksimal 6 bulan setelah tutup buku." class="w-full px-3 py-2 border rounded-lg">
+        </div>
+      </div>
+
+      <!-- Pengaturan Webhook Google Sheets & Aksi -->
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+        <label class="block text-xs font-bold text-emerald-900 mb-1">Webhook URL Google Sheets (Opsional):</label>
+        <input type="url" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 text-xs border rounded-lg bg-white mb-3">
+        
+        <div class="flex flex-wrap gap-2">
+          <button onclick="kirimKeSheets()" id="btnKirim" class="px-4 py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold hover:bg-emerald-800 transition">
+            Kirim ke Google Sheets
+          </button>
+          <button onclick="unduhCSV()" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-xs font-bold hover:bg-slate-900 transition">
+            Unduh CSV / Spreadsheet
+          </button>
+          <button onclick="window.print()" class="px-4 py-2 bg-slate-200 text-slate-800 rounded-lg text-xs font-bold hover:bg-slate-300 transition">
+            Cetak Berita Acara
+          </button>
+        </div>
+        <div id="notifStatus" class="mt-2 text-xs font-semibold"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const ITEMS = [
+      { id: '1.1.1', ask: 'Apakah Anggaran Dasar (AD/ART) Serta Perubahannya Telah Disahkan?', rev: false },
+      { id: '1.1.2', ask: 'Apakah Nomor Induk Koperasi (NIK) Masih Aktif?', rev: false },
+      { id: '1.1.3', ask: 'Apakah Izin Usaha Simpan Pinjam (IUSP) / NIB Sesuai Dengan KBLI Aktual?', rev: false },
+      { id: '1.2.1', ask: 'Apakah Pelaksanaan RAT Dilakukan Tepat Waktu (Maksimal 6 Bulan Setelah Tutup Buku)?', rev: false },
+      { id: '1.2.2', ask: 'Apakah Kepengurusan Dan Pengawasan Masih Dalam Masa Jabatan Yang Sah?', rev: false },
+      { id: '1.2.3', ask: 'Apakah Pengurus & Pengawas Telah Mengikuti Fit And Proper Test?', rev: false },
+      { id: '2.1.1', ask: 'Apakah Koperasi Memiliki Buku Daftar Anggota & Pengurus Yang Mutakhir Dan Tercatat Lengkap?', rev: false },
+      { id: '2.1.2', ask: 'Apakah Seluruh Pemanfaat Layanan USP Berstatus Anggota / Calon Anggota (Maks. 3 Bulan)?', rev: false },
+      { id: '2.2.1', ask: 'Apakah Koperasi Memiliki Peraturan Khusus (Persus) Atau SOP Operasional Usaha?', rev: false },
+      { id: '2.2.2', ask: 'Apakah Transaksi Keuangan Dilengkapi Dengan Sistem Otorisasi & Pemisahan Tugas?', rev: false },
+      { id: '3.1.1', ask: 'Apakah Laporan Keuangan Disusun Menggunakan SAK ETAP / SAK EP?', rev: false },
+      { id: '3.1.2', ask: 'Apakah Laporan Keuangan Diuji Melalui Audit Independen Sesuai Skala Usahanya?', rev: false },
+      { id: '3.2.1', ask: 'Apakah Ada Penyaluran Pinjaman Kepada Pihak Terkait Melebihi Batas Regulasi?', rev: true },
+      { id: '3.2.2', ask: 'Apakah Rasio Pinjaman Kepada Non-Anggota Melebihi Batas Toleransi?', rev: true },
+      { id: '3.3.1', ask: 'Apakah Pembagian SHU Dilakukan Sesuai Ketentuan AD/ART Dan Keputusan RAT?', rev: false },
+      { id: '4.1.1', ask: 'Apakah Koperasi Melakukan Formulir CDD (Identifikasi Profil Nasabah)?', rev: false },
+      { id: '4.1.2', ask: 'Apakah Koperasi Memiliki Pejabat/Penanggung Jawab Kepatuhan PMPJ?', rev: false },
+      { id: '4.2.1', ask: 'Apakah Koperasi Rutin Menyampaikan Laporan Keuangan Berkala via ODS Kemenkop UKM?', rev: false }
+    ];
+
+    const state = {};
+    ITEMS.forEach(it => { state[it.id] = { hasil: 'BELUM', catatan: '' }; });
+
+    // Inisialisasi tanggal
+    document.getElementById('tanggalPemeriksaan').value = new Date().toISOString().slice(0, 10);
+
+    function renderItems() {
+      const c = document.getElementById('itemsContainer');
+      c.innerHTML = ITEMS.map((item, idx) => `
+        <div class="p-3 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 ${state[item.id].hasil === 'YA' ? (item.rev ? 'bg-rose-50/40' : 'bg-emerald-50/40') : state[item.id].hasil === 'TIDAK' ? (item.rev ? 'bg-emerald-50/40' : 'bg-rose-50/40') : ''}">
+          <div class="flex-1">
+            <span class="font-bold text-slate-500 mr-1">${item.id}</span>
+            <span class="text-slate-800 font-medium">${item.ask}</span>
+            ${item.rev ? '<div class="text-[10px] text-amber-700 italic">Catatan: Pilihan "Tidak" berarti PATUH (tidak ada pelanggaran).</div>' : ''}
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="setHasil('${item.id}', 'YA')" class="px-3 py-1.5 rounded text-xs font-bold border ${state[item.id].hasil === 'YA' ? (item.rev ? 'bg-rose-600 text-white' : 'bg-emerald-700 text-white') : 'bg-white text-slate-700'}">Ya</button>
+            <button onclick="setHasil('${item.id}', 'TIDAK')" class="px-3 py-1.5 rounded text-xs font-bold border ${state[item.id].hasil === 'TIDAK' ? (item.rev ? 'bg-emerald-700 text-white' : 'bg-rose-600 text-white') : 'bg-white text-slate-700'}">Tidak</button>
+          </div>
+        </div>
+      `).join('');
+      updateSkor();
+    }
+
+    function setHasil(id, val) {
+      state[id].hasil = val;
+      renderItems();
+    }
+
+    function setAllPatuh() {
+      ITEMS.forEach(it => { state[it.id].hasil = it.rev ? 'TIDAK' : 'YA'; });
+      renderItems();
+    }
+
+    function updateSkor() {
+      let patuh = 0;
+      ITEMS.forEach(it => {
+        if (it.rev ? state[it.id].hasil === 'TIDAK' : state[it.id].hasil === 'YA') patuh++;
+      });
+      const pct = Math.round((patuh / ITEMS.length) * 100);
+      document.getElementById('scoreText').innerText = pct + '%';
+      document.getElementById('scoreDetail').innerText = `(${patuh} dari ${ITEMS.length} Patuh)`;
+
+      let status = 'Tidak Patuh';
+      let colorClass = 'bg-rose-100 text-rose-800';
+      if (pct >= 85) { status = 'Sangat Patuh'; colorClass = 'bg-emerald-100 text-emerald-800'; }
+      else if (pct >= 70) { status = 'Cukup Patuh'; colorClass = 'bg-blue-100 text-blue-800'; }
+      else if (pct >= 55) { status = 'Kurang Patuh'; colorClass = 'bg-amber-100 text-amber-800'; }
+
+      const badge = document.getElementById('statusBadge');
+      badge.innerText = status;
+      badge.className = 'px-3 py-1.5 rounded-lg text-xs font-bold ' + colorClass;
+    }
+
+    async function kirimKeSheets() {
+      const url = document.getElementById('webhookUrl').value.trim();
+      const notif = document.getElementById('notifStatus');
+      if (!url) {
+        notif.innerText = 'Harap isi Webhook URL Google Sheets terlebih dahulu.';
+        notif.className = 'mt-2 text-xs font-semibold text-rose-600';
+        return;
+      }
+      notif.innerText = 'Mengirim data ke Google Sheets...';
+      notif.className = 'mt-2 text-xs font-semibold text-blue-600';
+      
+      const payload = {
+        tanggalPemeriksaan: document.getElementById('tanggalPemeriksaan').value,
+        namaKoperasi: document.getElementById('namaKoperasi').value,
+        nomorBadanHukum: document.getElementById('nomorBadanHukum').value,
+        jenisKoperasi: document.getElementById('jenisKoperasi').value,
+        alamatKoperasi: document.getElementById('alamatKoperasi').value,
+        timPemeriksa: [document.getElementById('timPemeriksa').value],
+        pengurusKoperasi: [document.getElementById('pengurusKoperasi').value],
+        statusKepatuhan: document.getElementById('statusBadge').innerText,
+        persentaseKepatuhan: document.getElementById('scoreText').innerText.replace('%',''),
+        rekomendasi: [
+          document.getElementById('rek1').value,
+          document.getElementById('rek2').value,
+          document.getElementById('rek3').value
+        ],
+        wawancara: {
+          pemahamanRegulasi: document.getElementById('w1').value,
+          manajemenRisikoNPL: document.getElementById('w2').value,
+          pemberdayaanAnggota: document.getElementById('w3').value,
+          kepatuhanTataKelola: document.getElementById('w4').value
+        }
+      };
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        notif.innerText = 'Data berhasil terkirim ke Google Sheets!';
+        notif.className = 'mt-2 text-xs font-semibold text-emerald-700';
+      } catch (e) {
+        notif.innerText = 'Gagal mengirim: ' + e.message;
+        notif.className = 'mt-2 text-xs font-semibold text-rose-600';
+      }
+    }
+
+    function unduhCSV() {
+      const nama = document.getElementById('namaKoperasi').value || 'Koperasi';
+      const tgl = document.getElementById('tanggalPemeriksaan').value;
+      let csv = 'Parameter,Nilai\n';
+      csv += `"Nama Koperasi","${nama}"\n`;
+      csv += `"Nomor Badan Hukum / NIK","${document.getElementById('nomorBadanHukum').value}"\n`;
+      csv += `"Jenis Koperasi","${document.getElementById('jenisKoperasi').value}"\n`;
+      csv += `"Tanggal","${tgl}"\n`;
+      csv += `"Skor Kepatuhan","${document.getElementById('scoreText').innerText}"\n`;
+      csv += `"Status","${document.getElementById('statusBadge').innerText}"\n`;
+      
+      ITEMS.forEach(it => {
+        csv += `"[${it.id}] ${it.ask}","${state[it.id].hasil}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Pemeriksaan_${nama}_${tgl}.csv`;
+      a.click();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>
